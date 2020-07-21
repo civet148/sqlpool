@@ -1,0 +1,28 @@
+# 日志配置
+[log]
+logPath = "test.log"
+logLevel = "debug"
+
+[[mysql.masters]]
+# 主数据库(读写)
+name = "master01"
+dsn = "mysql://root:123456@127.0.0.1:3306/enterprise?charset=utf8mb4"
+active = 100
+idle = 2
+
+[[mysql.slaves]]
+# 备份数据库(只读)
+name = "slave01"
+dsn = "mysql://root:123456@127.0.0.1:3306/enterprise?charset=utf8mb4&slave=true"
+active = 100
+idle = 2
+
+[queue]
+# 默认协程数(最好小于等于mysql最大连接数)
+routines = 100
+# 默认超时（秒）
+timeout = 5
+# 默认容量
+cap=50
+# 输出调试队列数据
+debug = true
