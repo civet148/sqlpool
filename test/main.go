@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"github.com/BurntSushi/toml"
 	"github.com/civet148/gotools/log"
-	"github.com/civet148/sqlca"
 	"github.com/civet148/sqlpool"
 )
 
@@ -26,6 +25,7 @@ func main() {
 	if err = sqlpool.InstallSqlPool(config); err != nil {
 		panic("install sql pool failed")
 	}
+	log.Debugf("config [%+v]", config)
 
 	//new sql queue
 	pool := sqlpool.NewSqlQueue("SQL-QUEUE", config.Queue.Timeout)
@@ -34,7 +34,7 @@ func main() {
 	}
 
 	//invoke...
-	obj := pool.Invoke(sqlpool.SqlPriority_High, &SqlPoolDAO{}, &SqlRequest{Id: 1})
+	obj := pool.Invoke(sqlpool.SqlPriority_High, &SqlPoolDAO{}, &SqlRequest{Name: "john"})
 	response := obj.(*sqlpool.SqlResponse)
 	if response.OK() {
 		log.Infof("response ok, result [%+v]", response.Object())
@@ -53,7 +53,7 @@ type SqlResult struct {
 }
 
 type SqlRequest struct {
-	Id int
+	Name string
 }
 
 func (r *SqlResult) String() string {
@@ -71,8 +71,23 @@ func (dao *SqlPoolDAO) String() string {
 	return string(data)
 }
 
-func (dao *SqlPoolDAO) OnSqlProcess(db *sqlca.Engine, request sqlpool.Object) (response sqlpool.Object, err error) {
+func (dao *SqlPoolDAO) OnSqlProcess(pool *sqlpool.SqlPool, request sqlpool.Object) (response sqlpool.Object, err error) {
 	log.Infof("SqlPoolDAO -> OnSqlProcess...request [%+v]", request)
 	// your database operation code...
-	return &SqlResult{Ok: true, LastInsertId: 100}, nil
+	type User struct {
+		Id   int32  `db:"id"`
+		Name string `db:"name"`
+	}
+
+	req := request.(*SqlRequest)
+	var user = User{
+		Name: req.Name,
+	}
+
+	var lastInsertId int64
+	if lastInsertId, err = pool.Engine().Model(&user).Table("users").Insert(); err != nil {
+		log.Errorf("SQL insert error [%+v]", err.Error())
+		return &SqlResult{Ok: false, LastInsertId: 0}, nil
+	}
+	return &SqlResult{Ok: true, LastInsertId: lastInsertId}, nil
 }

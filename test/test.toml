@@ -26,3 +26,23 @@ timeout = 5
 cap=50
 # 输出调试队列数据
 debug = true
+
+[redis]
+# redis auth password
+password = ""
+# redis db index (0~15)
+index = 0
+# redis master host
+masterHost = "127.0.0.1"
+# redis replicate hosts
+replicateHosts = []
+# default connect timeout (ms)
+connTimeout = 1000
+# default connect timeout (ms)
+readTimeout = 1000
+# default connect timeout (ms)
+writeTimeout = 1000
+# default keep alive 30s
+keepAlive = 30
+# default alive time 60s
+aliveTime = 60

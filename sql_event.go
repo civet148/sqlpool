@@ -2,7 +2,6 @@ package sqlpool
 
 import (
 	"encoding/json"
-	"github.com/civet148/sqlca"
 	"math/rand"
 	"reflect"
 	"time"
@@ -13,7 +12,7 @@ type Object interface {
 }
 
 type SqlHandler interface {
-	OnSqlProcess(db *sqlca.Engine, request Object) (response Object, err error)
+	OnSqlProcess(pool *SqlPool, request Object) (response Object, err error)
 }
 
 type sqlEvent struct {

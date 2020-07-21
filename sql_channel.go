@@ -206,7 +206,7 @@ func (c *sqlChannel) onSqlEvent(event *sqlEvent) {
 	var nano1 = time.Now().UnixNano()
 
 	//调用处理方法得到结果
-	object, err := event.handler.OnSqlProcess(db, event.Request)
+	object, err := event.handler.OnSqlProcess(pool, event.Request)
 
 	var nano2 = time.Now().UnixNano()
 

@@ -4,6 +4,7 @@ type SqlConfig struct {
 	Mysql Mysql `toml:"mysql"`
 	Queue Queue `toml:"queue"`
 	Log   Log   `toml:"log"`
+	Redis Redis `toml:"redis"`
 }
 
 type Log struct {
@@ -36,4 +37,16 @@ type Queue struct {
 	Timeout  int  `toml:"timeout"`
 	Cap      int  `toml:"cap"`
 	Debug    bool `toml:"debug"`
+}
+
+type Redis struct {
+	Password       string   `toml:"password"`       //auth password
+	Index          int      `toml:"index"`          //db index
+	MasterHost     string   `toml:"masterHost"`     //master node
+	ReplicateHosts []string `toml:"replicateHosts"` //replicate node
+	ConnTimeout    int      `toml:"connTimeout"`    //millisecond
+	ReadTimeout    int      `toml:"readTimeout"`    //millisecond
+	WriteTimeout   int      `toml:"writeTimeout"`   //millisecond
+	KeepAlive      int      `toml:"keepAlive"`      //second
+	AliveTime      int      `toml:"aliveTime"`      //second
 }
