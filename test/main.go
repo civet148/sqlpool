@@ -34,7 +34,7 @@ func main() {
 	}
 
 	//invoke...
-	obj := pool.Invoke(sqlpool.SqlPriority_High, &SqlPoolDAO{}, &SqlRequest{Name: "john"})
+	obj := pool.Invoke(sqlpool.SqlPriority_High, &SqlPoolDAO{}, &SqlRequest{User: &User{Name: "john", Phone: "8613022223333"}})
 	response := obj.(*sqlpool.SqlResponse)
 	if response.OK() {
 		log.Infof("response ok, result [%+v]", response.Object())
@@ -52,8 +52,14 @@ type SqlResult struct {
 	LastInsertId int64
 }
 
+type User struct {
+	Id    int32  `db:"id"`
+	Name  string `db:"name"`
+	Phone string `db:"phone"`
+}
+
 type SqlRequest struct {
-	Name string
+	User *User
 }
 
 func (r *SqlResult) String() string {
@@ -74,18 +80,11 @@ func (dao *SqlPoolDAO) String() string {
 func (dao *SqlPoolDAO) OnSqlProcess(pool *sqlpool.SqlPool, request sqlpool.Object) (response sqlpool.Object, err error) {
 	log.Infof("SqlPoolDAO -> OnSqlProcess...request [%+v]", request)
 	// your database operation code...
-	type User struct {
-		Id   int32  `db:"id"`
-		Name string `db:"name"`
-	}
 
 	req := request.(*SqlRequest)
-	var user = User{
-		Name: req.Name,
-	}
 
 	var lastInsertId int64
-	if lastInsertId, err = pool.Engine().Model(&user).Table("users").Insert(); err != nil {
+	if lastInsertId, err = pool.Engine().Model(req.User).Table("users").Insert(); err != nil {
 		log.Errorf("SQL insert error [%+v]", err.Error())
 		return &SqlResult{Ok: false, LastInsertId: 0}, nil
 	}
