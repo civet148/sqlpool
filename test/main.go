@@ -56,6 +56,7 @@ type User struct {
 	Id    int32  `db:"id"`
 	Name  string `db:"name"`
 	Phone string `db:"phone"`
+	Sex   int    `db:"sex"`
 }
 
 type SqlRequest struct {
