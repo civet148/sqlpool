@@ -38,7 +38,6 @@ func newSqlNode(priority SqlPriority, event *sqlEvent) *sqlNode {
 /*
 创建SQL执行队列
 strQueueName     队列名称(队列唯一名称)
-sqlType  操作数据库类型(SqlType_Any=任意 SqlType_Master=主库 SqlType_Slave=从库)
 timeout  超时时间（默认值通过配置指定）
 */
 func NewSqlQueue(strQueueName string, timeout int) *SqlQueue {
