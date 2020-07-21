@@ -2,7 +2,7 @@
 
 ## 调用方式
 
-* 初始化SQL连接池
+* 初始化SQL任务池
 ```go
 if err := sqlpool.InstallSqlPool(config); err != nil {
     panic("install sql pool failed")
