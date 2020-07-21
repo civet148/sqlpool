@@ -6,14 +6,14 @@ logLevel = "debug"
 [[mysql.masters]]
 # 主数据库(读写)
 name = "master01"
-dsn = "mysql://root:123456@127.0.0.1:3306/enterprise?charset=utf8mb4"
+dsn = "mysql://root:123456@127.0.0.1:3306/test?charset=utf8mb4"
 active = 100
 idle = 2
 
 [[mysql.slaves]]
 # 备份数据库(只读)
 name = "slave01"
-dsn = "mysql://root:123456@127.0.0.1:3306/enterprise?charset=utf8mb4&slave=true"
+dsn = "mysql://root:123456@127.0.0.1:3306/test?charset=utf8mb4&slave=true"
 active = 100
 idle = 2
 
