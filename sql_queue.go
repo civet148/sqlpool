@@ -17,7 +17,7 @@ type SqlQueue struct {
 	sqlList *sqlList
 }
 
-func InstallSqlQueue(config *SqlConfig) (err error) {
+func InstallSqlPool(config *SqlConfig) (err error) {
 
 	if err = installDatabase(config); err != nil {
 		log.Errorf("panic: install database error [%v]", err.Error())

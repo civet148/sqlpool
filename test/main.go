@@ -23,7 +23,7 @@ func main() {
 	}
 
 	//install sql pool ...
-	if err = sqlpool.InstallSqlQueue(config); err != nil {
+	if err = sqlpool.InstallSqlPool(config); err != nil {
 		panic("install database failed")
 	}
 
