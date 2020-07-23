@@ -87,7 +87,7 @@ func (dao *SqlPoolDAO) OnSqlProcess(pool *sqlpool.SqlPool, request sqlpool.Objec
 	var lastInsertId int64
 	if lastInsertId, err = pool.Engine().Model(req.User).Table("users").Insert(); err != nil {
 		log.Errorf("SQL insert error [%+v]", err.Error())
-		return &SqlResult{Ok: false, LastInsertId: 0}, nil
+		return nil, err
 	}
 	return &SqlResult{Ok: true, LastInsertId: lastInsertId}, nil
 }
