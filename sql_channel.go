@@ -87,7 +87,6 @@ func (c *sqlChannel) GetCap() int {
 func (c *sqlChannel) Close() {
 	c.lock()
 	defer c.unlock()
-	c.isClosed = true
 	c.closing <- c.isClosed
 	close(c.receiving)
 	close(c.closing)
@@ -147,6 +146,9 @@ func (c *sqlChannel) start() {
 func (c *sqlChannel) runLoop() {
 
 	for {
+		if c.IsClosed() {
+			break
+		}
 		select {
 		case strQueueName := <-c.notifying: //队列插入成功通知(开始从指定队列取数据进行处理)
 			{
@@ -162,8 +164,8 @@ func (c *sqlChannel) runLoop() {
 			}
 		case <-c.closing:
 			{
+				c.isClosed = true
 				log.Infof("sql channel [%v] closing...", c.GetName())
-				break
 			}
 		}
 	}
