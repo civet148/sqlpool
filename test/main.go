@@ -33,8 +33,8 @@ func main() {
 		panic("new sql queue failed")
 	}
 
-	//invoke...
-	obj := pool.Invoke(sqlpool.SqlPriority_High, &SqlPoolDAO{}, &SqlRequest{User: &User{Name: "john", Phone: "8613022223333"}})
+	//invoke...timeout with few seconds
+	obj := pool.Invoke(sqlpool.SqlPriority_High, 5, &SqlPoolDAO{}, &SqlRequest{User: &User{Name: "john", Phone: "8613022223333"}})
 	response := obj.(*sqlpool.SqlResponse)
 	if response.OK() {
 		log.Infof("response ok, result [%+v]", response.Object())

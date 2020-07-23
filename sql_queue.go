@@ -67,13 +67,15 @@ func (q *SqlQueue) GetTimeOut() int {
 	return q.Timeout
 }
 
-func (q *SqlQueue) Invoke(priority SqlPriority, handler SqlHandler, request Object) Object {
+func (q *SqlQueue) Invoke(priority SqlPriority, timeout int, handler SqlHandler, request Object) Object {
 
 	var invokeTime = time.Now().Format("2006-01-02 15:04:05")
-	var timeout = q.GetTimeOut()
 	var strQueueName = q.GetName()
-	var event = newSqlEvent(handler, request, timeout)
+	if timeout <= 0 {
+		timeout = q.GetTimeOut()
+	}
 
+	var event = newSqlEvent(handler, request, timeout)
 	log.Debugf("sql queue [%v] invoke handler [%+v] request [%+v]", strQueueName, handler, request)
 
 	q.insertEvent(priority, event)
