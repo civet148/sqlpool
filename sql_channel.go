@@ -10,7 +10,7 @@ import (
 const (
 	DEFAULT_SQL_QUEUE_TIMEOUT      = 3     //超时时间(单位：秒)
 	DEFAULT_SQL_QUEUE_CAP          = 100   //容量
-	DEFAULT_SQL_QUEUE_ROUTINES     = 2     //默认一个队列协程数
+	DEFAULT_SQL_QUEUE_ROUTINES     = 100   //默认一个队列协程数
 	DEFAULT_SQL_CHANNEL_NOTIFY_CAP = 10000 //通知通道容量
 )
 
